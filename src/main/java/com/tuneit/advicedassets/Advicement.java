@@ -1,4 +1,4 @@
-package org.geoshark.advicedassets;
+package com.tuneit.advicedassets;
 
 import javax.portlet.*;
 import com.liferay.portal.kernel.exception.PortalException;

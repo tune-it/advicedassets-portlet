@@ -5,7 +5,7 @@
     <portlet>
         <portlet-name>AdvicedAssets</portlet-name>
         <icon>/icon.png</icon>
-        <configuration-action-class>org.geoshark.advicedassets.AdvicedAssetsConfig</configuration-action-class>
+        <configuration-action-class>com.tuneit.advicedassets.AdvicedAssetsConfig</configuration-action-class>
         <instanceable>false</instanceable>
         <header-portlet-css>/css/main.css</header-portlet-css>
         <footer-portlet-javascript>/js/main.js</footer-portlet-javascript>

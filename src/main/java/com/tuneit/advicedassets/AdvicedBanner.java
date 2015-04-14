@@ -1,4 +1,4 @@
-package org.geoshark.advicedassets;
+package com.tuneit.advicedassets;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

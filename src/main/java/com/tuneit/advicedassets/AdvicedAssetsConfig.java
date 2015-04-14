@@ -1,4 +1,4 @@
-package org.geoshark.advicedassets;
+package com.tuneit.advicedassets;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;

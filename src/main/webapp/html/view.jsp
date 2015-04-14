@@ -3,11 +3,13 @@
 <%@page import="com.liferay.portlet.asset.service.AssetEntryLocalServiceUtil"%>
 <%@page import="com.liferay.portlet.asset.model.AssetEntry"%>
 <%@page import="com.liferay.portal.kernel.util.*"%>
-<%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
-<%@ taglib uri="http://liferay.com/tld/aui" prefix="aui" %>
-<%@page import="org.geoshark.advicedassets.*"%>
+<%@page import="com.liferay.portal.kernel.language.LanguageUtil" %>
+<%@page import="com.tuneit.advicedassets.*"%>
 <%@page import="javax.portlet.*"%>
-<%@page import="java.util.*"%>
+<%@page import="java.util.*"%>   
+
+<%@taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
+<%@taglib uri="http://liferay.com/tld/aui" prefix="aui" %>
 
 
 <portlet:defineObjects />
@@ -16,13 +18,10 @@
 Advicement advicement = new Advicement();
 AssetEntry catchedAsset = advicement.catchAsset(portletSession);
 
-Locale locale = renderRequest.getLocale();
-ResourceBundle resourceBundle = portletConfig.getResourceBundle(locale);
-
 if(catchedAsset == null) {
 	%>
 	<p class="portlet-msg-info">
-		<%=resourceBundle.getString("view.nocontent") %>
+		<%= LanguageUtil.get(pageContext, "view.nocontent") %>
 	</p>
 	<%
 }
@@ -71,14 +70,14 @@ else {
 	if((n == 0) && (maxListSize > 0)) {
 		%>
 		<p class="portlet-msg-info">
-			<%= resourceBundle.getString("view.nofoundcontent") %>
+			<%= LanguageUtil.get(pageContext, "view.nofoundcontent") %>
 		</p>
 		<%
 	}
 	
 	if(n > 0 && maxListSize > 0) {
 		%>
-		<h3><%=resourceBundle.getString("view.advicedcontent") %></h3>
+		<h3><%= LanguageUtil.get(pageContext, "view.advicedcontent") %></h3>
 		<%
 	}
 	

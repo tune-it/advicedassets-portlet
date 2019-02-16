@@ -11,7 +11,6 @@
             <taglib-uri>http://liferay.com/tld/aui</taglib-uri>
             <taglib-location>/WEB-INF/tld/liferay-aui.tld</taglib-location>
         </taglib>
-
     </jsp-config>
 	
 </web-app>

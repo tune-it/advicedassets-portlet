@@ -4,7 +4,7 @@
 <%@ page import="javax.portlet.*" %>
 <%@ page import="java.util.*" %>
 <%@ page import="com.liferay.asset.kernel.model.AssetEntry" %>
-<%@ page import="com.liferay.blogs.kernel.model.BlogsEntry" %>
+<%@ page import="com.tuneit.advisedassets.config.AdvisedAssetsConfigurationAction" %>
 
 <%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
 <%@ taglib prefix="aui" uri="http://liferay.com/tld/aui" %>
@@ -21,20 +21,20 @@
     if (caughtAsset == null) {
 	%>
 	<p class="portlet-msg-info">
-		<%= LanguageUtil.get(portletConfig.getResourceBundle(request.getLocale()), "view.nocontent") %>
+		<%= LanguageUtil.get(request, "view.nocontent") %>
     </p>
 	<%
 }
 else {
 	boolean repeatBanner = PrefsParamUtil.getBoolean(
 			portletPreferences, request,
-			AdvisedAssetsConfig.repeatBanner, AdvisedAssetsConfig.repeatBannerDefault);
+			AdvisedAssetsConfigurationAction.repeatBanner, AdvisedAssetsConfigurationAction.repeatBannerDefault);
 	String bannerTagRegexp = PrefsParamUtil.getString(
 			portletPreferences, request,
-			AdvisedAssetsConfig.bannersTagRegexp, AdvisedAssetsConfig.bannersTagRegexpDefault);
+			AdvisedAssetsConfigurationAction.bannersTagRegexp, AdvisedAssetsConfigurationAction.bannersTagRegexpDefault);
 	int minFavor = PrefsParamUtil.getInteger(
 			portletPreferences, request,
-			AdvisedAssetsConfig.minFavor, AdvisedAssetsConfig.minFavorDefault);
+			AdvisedAssetsConfigurationAction.minFavor, AdvisedAssetsConfigurationAction.minFavorDefault);
 
 	advisement.setRepeatBanner(repeatBanner);
 	advisement.setBannerRegexp(bannerTagRegexp);
@@ -43,7 +43,7 @@ else {
 
 	int n = PrefsParamUtil.getInteger(
 			portletPreferences, request,
-			AdvisedAssetsConfig.maxBannersNumber, AdvisedAssetsConfig.maxBannersNumberDefault);
+			AdvisedAssetsConfigurationAction.maxBannersNumber, AdvisedAssetsConfigurationAction.maxBannersNumberDefault);
 	ArrayList<AdvisedBanner> banners = advisement.getBanners();
 	if(n > banners.size()) {
 		n = banners.size();
@@ -61,23 +61,26 @@ else {
 
 	int maxListSize = PrefsParamUtil.getInteger(
 			portletPreferences, request,
-			AdvisedAssetsConfig.maxAssetsListSize, AdvisedAssetsConfig.maxAssetsListSizeDefault);
+			AdvisedAssetsConfigurationAction.maxAssetsListSize, AdvisedAssetsConfigurationAction.maxAssetsListSizeDefault);
+
 	n = maxListSize;
 	ArrayList<AdvisedAsset> advisedAssets = advisement.getAdvisedAssets();
+
 	if (n > advisedAssets.size()) {
 		n = advisedAssets.size();
 	}
+
 	if ((n == 0) && (maxListSize > 0)) {
 		%>
 		<p class="portlet-msg-info">
-			<%= LanguageUtil.get(portletConfig.getResourceBundle(request.getLocale()), "view.nofoundcontent") %> n is 0
+			<%= LanguageUtil.get(request, "view.nofoundcontent") %> n is 0
         </p>
 		<%
 	}
 
 	if (n > 0 && maxListSize > 0) {
 		%>
-		<h3><%= LanguageUtil.get(portletConfig.getResourceBundle(request.getLocale()), "view.advicedcontent") %></h3>
+		<h3><%= LanguageUtil.get(request, "view.advicedcontent") %></h3>
 		<%
 	}
 
@@ -88,7 +91,7 @@ else {
 		String title = advisedAsset.getTitle();
 		int favor = advisedAsset.getFavor();
 		%>
-		<aui:a cssClass="adviced-link" href="<%=url%>"><%=title%>(<%=favor%>)</aui:a><br />
+		<aui:a cssClass="adviced-link" href="<%=url%>"><%=title%><%--(<%=favor%>)--%></aui:a><br />
 		<%
 	}
 }

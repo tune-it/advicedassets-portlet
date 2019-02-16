@@ -1,13 +1,12 @@
 package com.tuneit.advisedassets.portlet;
 
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
-import com.tuneit.advisedassets.constants.AdvisedAssetsPortletKeys;
 import org.osgi.service.component.annotations.Component;
 
 import javax.portlet.Portlet;
 
 /**
- * @author sky
+ * @author IvanKayukoff
  */
 @Component(
     immediate = true,
@@ -15,7 +14,7 @@ import javax.portlet.Portlet;
         "com.liferay.portlet.display-category=category.sample",
         "com.liferay.portlet.instanceable=true",
         "javax.portlet.display-name=AdvisedAssets",
-        "javax.portlet.name=" + AdvisedAssetsPortletKeys.AdvisedAssets,
+        "javax.portlet.name=advisedassets",
         "javax.portlet.security-role-ref=guest,power-user,user",
         "javax.portlet.init-param.template-path=/",
         "javax.portlet.init-param.view-template=/view.jsp",

@@ -8,43 +8,21 @@
 
 <%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
 <%@ taglib prefix="aui" uri="http://liferay.com/tld/aui" %>
+<%@ taglib prefix="liferay-ui" uri="http://liferay.com/tld/ui" %>
 
 <portlet:defineObjects />
 
 <%
     AssetEntry caughtAsset = (AssetEntry) request.getAttribute("LIFERAY_SHARED_LAYOUT_ASSET_ENTRY");
     portletSession.setAttribute("LIFERAY_SHARED_LAYOUT_ASSET_ENTRY", caughtAsset, PortletSession.APPLICATION_SCOPE);
-%>
-    <%--Enumeration<String> attributeNames = request.getAttributeNames();--%>
-    <%--if (attributeNames != null) {--%>
-		<%--while (attributeNames.hasMoreElements()) {--%>
-			<%--String name = attributeNames.nextElement();--%>
-			<%--%>--%>
-			<%--<h4> <%= name + "\n" %> </h4>--%>
-			<%--<%--%>
-		<%--}--%>
-	<%--} else {--%>
-        <%--%> <h3>AttributeNames are null</h3> <%--%>
-    <%--}--%>
 
-	<%--String caughtAssetClassName = null;--%>
-    <%--if (caughtAsset == null) {--%>
-		<%--%> <h3>Attribute LIFERAY_SHARED_LAYOUT_ASSET_ENTRY is null</h3> <%--%>
-	<%--} else {--%>
-    	<%--caughtAssetClassName = caughtAsset.getClassName();--%>
-	<%--}--%>
-
-<%--%> <h3> ClassName: <%=caughtAssetClassName%> </h3>--%>
-
-<%
     Advisement advisement = new Advisement();
 
     if (caughtAsset == null) {
 	%>
 	<p class="portlet-msg-info">
-		<%-- FIXME LanguageUtil.get() does not work --%>
 		<%= LanguageUtil.get(portletConfig.getResourceBundle(request.getLocale()), "view.nocontent") %>
-	</p>
+    </p>
 	<%
 }
 else {
@@ -93,7 +71,7 @@ else {
 		%>
 		<p class="portlet-msg-info">
 			<%= LanguageUtil.get(portletConfig.getResourceBundle(request.getLocale()), "view.nofoundcontent") %> n is 0
-		</p>
+        </p>
 		<%
 	}
 

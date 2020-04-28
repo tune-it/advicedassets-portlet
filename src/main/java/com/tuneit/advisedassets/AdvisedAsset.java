@@ -13,11 +13,8 @@ import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.shopping.model.ShoppingItem;
-import com.liferay.shopping.service.ShoppingItemLocalServiceUtil;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
-
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletURL;
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +22,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.StringReader;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 /**
  * This class represents advised asset.
  * It contains AssetEntry object of advised asset with it's favor.
@@ -33,6 +32,7 @@ import java.io.StringReader;
  * @author Berlev Vladimir
  */
 public class AdvisedAsset implements Comparable<AdvisedAsset> {
+    private static final Log log = LogFactoryUtil.getLog(AdvisedAsset.class);
 
     public AdvisedAsset(AssetEntry assetEntry) {
         this(assetEntry, 0);
@@ -63,26 +63,22 @@ public class AdvisedAsset implements Comparable<AdvisedAsset> {
      */
     public String formAssetURL(LiferayPortletRequest request, LiferayPortletResponse response) {
         String url;
-        if (assetEntry.getClassName().matches(ShoppingItem.class.getName())) {
-            try {
-                ShoppingItem item = ShoppingItemLocalServiceUtil.getItem(assetEntry.getClassPK());
-                url = getShoppingItemUrl(request, response, item);
-            } catch (PortalException | SystemException e) {
-                url = "";
-                e.printStackTrace();
-            }
-        } else {
+        if (assetEntry.getUrl() == null || assetEntry.getUrl().isEmpty()) {
             try {
                 AssetRendererFactory assetRendererFactory =
-                    AssetRendererFactoryRegistryUtil
-                        .getAssetRendererFactoryByClassName(
-                            assetEntry.getClassName());
+                        AssetRendererFactoryRegistryUtil
+                                .getAssetRendererFactoryByClassName(
+                                        assetEntry.getClassName());
                 AssetRenderer assetRenderer = assetRendererFactory
-                    .getAssetRenderer(assetEntry.getClassPK());
+                        .getAssetRenderer(assetEntry.getClassPK());
                 url = assetRenderer.getURLViewInContext(request, response, "");
             } catch (Exception ex) {
+                log.warn(ex.getLocalizedMessage());
                 url = "";
             }
+        }
+        else {
+            url = assetEntry.getUrl();
         }
         return url;
     }
@@ -109,39 +105,6 @@ public class AdvisedAsset implements Comparable<AdvisedAsset> {
     public int compareTo(AdvisedAsset o) {
         return this.favor - o.favor;
     }
-
-    /**
-     * Own method for generating URL for
-     * ShoppingItem instances.
-     *
-     * @param liferayPortletRequest
-     * @param liferayPortletResponse
-     * @param item
-     * @return
-     */
-    public String getShoppingItemUrl(
-        LiferayPortletRequest liferayPortletRequest,
-        LiferayPortletResponse liferayPortletResponse,
-        ShoppingItem item) {
-        String url;
-        HttpServletRequest httpRequest = PortalUtil.getHttpServletRequest(liferayPortletRequest);
-        httpRequest = PortalUtil.getOriginalServletRequest(httpRequest);
-        try {
-            Group grp = GroupLocalServiceUtil.getGroup(
-                PortalUtil.getDefaultCompanyId(),
-                "Guest");
-            long plid = PortalUtil.getPlidFromPortletId(grp.getGroupId(), "34");
-            PortletURL portletURL = PortletURLFactoryUtil.create(httpRequest, "34", plid, PortletRequest.RENDER_PHASE);
-            portletURL.setParameter("struts_action", "/shopping/view_item");
-            portletURL.setParameter("itemSku", item.getSku());
-            url = portletURL.toString();
-        } catch (PortalException | SystemException e) {
-            url = "";
-            e.printStackTrace();
-        }
-        return url;
-    }
-
     protected AssetEntry assetEntry;
     protected int favor;
 }
